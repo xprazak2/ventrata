@@ -7,7 +7,7 @@ import (
 
 type Availability struct {
 	Id        string                   `json:"id"`
-	LocalDate utils.LocalDate          `json:"local_date"` // yyyy-MM-dd
+	LocalDate utils.LocalDate          `json:"local_date"`
 	Status    model.AvailabilityStatus `json:"status"`
 	Vacancies uint64                   `json:"vacancies"`
 	Available bool                     `json:"available"`

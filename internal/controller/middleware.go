@@ -24,9 +24,6 @@ func WithCapability(next http.Handler) http.Handler {
 }
 
 func IsPriced(ctx context.Context) bool {
-	// bl := ctx.Value(capbPricing)
-	// fmt.Printf("wooot %s\n", bl)
-
 	u, _ := ctx.Value(capbPricing).(bool)
 	return u
 }
