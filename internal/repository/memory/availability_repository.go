@@ -60,7 +60,6 @@ func (repo *Memory) GetAvailabilityRange(
 		return nil, verrors.NewNotFoundError("product", productId)
 	}
 
-	added := []model.Availability{}
 	count := len(entry.availability)
 
 	first := entry.availability[0]
@@ -72,18 +71,16 @@ func (repo *Memory) GetAvailabilityRange(
 	// and it should not generate missing availability records.
 	// Availability records for the whole year should be already created via a different mechanism
 	// (regularly scheduled job once a day?)
-	// and they should be already present so that
-	// we can simply look up the existing records.
+	// and they should be already present so that we can simply look up the existing records.
 	// But the lifecycle of the product and is availabilities is not specified and in-memory is not a good storage anyway...
 	if count < endOffsetDays {
 		last := entry.availability[count-1]
 		newDate := last.LocalDate.Add(24 * time.Hour)
-		added = generateAvailabilityRange(
+		added := generateAvailabilityRange(
 			newDate, endDate, entry.product.Capacity, entry.product.Price, entry.product.Currency,
 		)
+		entry.availability = append(entry.availability, added...)
 	}
-
-	entry.availability = append(entry.availability, added...)
 
 	startOffsetDays := offsetDays(startDate, first.LocalDate)
 

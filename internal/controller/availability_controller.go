@@ -2,7 +2,6 @@ package controller
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -31,7 +30,7 @@ func GetAvailability(svc *service.AvailabilityService) func(w http.ResponseWrite
 
 		startDate, endDate, err := getRangeDates(rangeParams)
 		if err != nil {
-			http.Error(w, "invalid request parameters", http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
@@ -57,6 +56,6 @@ func getRangeDates(params DateRangeParams) (*time.Time, *time.Time, error) {
 	} else if params.LocalDateStart != nil && params.LocalDateEnd != nil {
 		return &params.LocalDateStart.Time, &params.LocalDateEnd.Time, nil
 	} else {
-		return nil, nil, fmt.Errorf("invalid request parameters")
+		return nil, nil, verrors.ErrInvalidRequestParams
 	}
 }

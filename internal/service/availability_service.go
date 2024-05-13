@@ -1,12 +1,12 @@
 package service
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/xprazak2/ventrata/internal/model"
 	"github.com/xprazak2/ventrata/internal/repository"
 	"github.com/xprazak2/ventrata/internal/utils"
+	"github.com/xprazak2/ventrata/internal/verrors"
 )
 
 type AvailabilityService struct {
@@ -22,7 +22,7 @@ func (svc *AvailabilityService) GetAvailabilityRange(
 	productId string, startDate time.Time, endDate time.Time,
 ) ([]model.Availability, error) {
 	if endDate.Before(startDate) {
-		return nil, fmt.Errorf("invalid date range")
+		return nil, verrors.ErrInvalidDateRange
 	}
 
 	today := svc.dateProvider.Today()

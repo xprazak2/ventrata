@@ -1,11 +1,10 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/google/uuid"
 	"github.com/xprazak2/ventrata/internal/model"
 	"github.com/xprazak2/ventrata/internal/repository"
+	"github.com/xprazak2/ventrata/internal/verrors"
 )
 
 type BookingService struct {
@@ -18,7 +17,7 @@ func NewBookingService(repo repository.Repository) *BookingService {
 
 func (svc *BookingService) CreateBooking(productId string, availId string, units uint64) (*model.Booking, error) {
 	if units == 0 {
-		return nil, fmt.Errorf("at least one unit required for a booking to be created")
+		return nil, verrors.ErrNoBooking
 	}
 
 	svc.repo.Lock()
@@ -30,7 +29,7 @@ func (svc *BookingService) CreateBooking(productId string, availId string, units
 	}
 
 	if avail.Vacancies < units {
-		return nil, fmt.Errorf("not enough vacancies")
+		return nil, verrors.ErrNoVacancies
 	}
 
 	err = svc.repo.UpdateAvailabilityVacancies(productId, availId, units)
