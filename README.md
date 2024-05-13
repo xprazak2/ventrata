@@ -58,4 +58,4 @@ go test ./test/... -v
 ```
 
 ## Implementation notes
-* The lifecycle for a product is not specified which means there is no way to create a product (via exposed endpoints). Without a product, it is not possible to check product availability or create a booking, so I seed 2 products into the data store on start with ids `foo` and `bar` which can be thought of as 'default' or 'initial' offering. While seeding data can be useful in some cases, we probably want a well-defined user story for managing products.
+* The lifecycle for a product is not specified which means there is no way to create a product (via exposed endpoints). Without a product, it is not possible to check product availability or create a booking, so I seed 2 products into the data store on start with ids `foo` and `bar` which can be thought of as 'default' or 'initial' offering. While seeding data can be useful in some cases, we probably want a well-defined user story for managing products in production scenarios.
